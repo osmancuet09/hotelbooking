@@ -62,4 +62,20 @@ public class ReservationService {
         }
         return null;
     }
+    @Transactional
+    public String cancelReservation(UUID reservationId){
+        Reservation reservation =  reservationRepository.findByActiveReservationId(reservationId);
+        if(reservation!=null){
+            List<PresidentialSuitOfADay> presidentialSuitOfADayList = presidentialSuitOfADayRepository.findByReservation(reservation);
+            presidentialSuitOfADayList.forEach(presidentialSuitOfADay -> {
+                presidentialSuitOfADay.setReserved(false);
+                presidentialSuitOfADay.setReservation(null);
+            });
+            presidentialSuitOfADayRepository.saveAll(presidentialSuitOfADayList);
+            reservation.setStatus(ReservationStatus.CANCELLED);
+            reservationRepository.save(reservation);
+            return new String("reservation cancelled successfully");
+        }
+        return null;
+    }
 }

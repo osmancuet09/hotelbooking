@@ -40,7 +40,11 @@ public class ReservationController {
     }
 
     @PutMapping("/booking/{id}")
-    ResponseEntity<String> cancelBooking(@PathVariable String id) {
-        return new ResponseEntity<>(new String("Reservation cancelled for Mr. Tommy"), HttpStatus.OK);
+    ResponseEntity cancelBooking(@PathVariable UUID id) {
+        String response = reservationService.cancelReservation(id);
+        if(response==null){
+            return new ResponseEntity<>(new String("Reservation information not found"),HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

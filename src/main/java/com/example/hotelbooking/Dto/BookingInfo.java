@@ -1,5 +1,6 @@
 package com.example.hotelbooking.Dto;
 
+import com.example.hotelbooking.utility.ReservationStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,4 +14,5 @@ public class BookingInfo {
     Integer guestCount;
     Date startDate;
     Date endDate;
+    ReservationStatus status;
 }
