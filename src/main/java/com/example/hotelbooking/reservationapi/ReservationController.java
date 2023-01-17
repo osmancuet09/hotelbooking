@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 public class ReservationController {
 
@@ -29,8 +31,12 @@ public class ReservationController {
     }
 
     @GetMapping("/booking/{id}")
-    ResponseEntity<BookingInfo> getBooking(@PathVariable String id) {
-        return new ResponseEntity<>(new BookingInfo(), HttpStatus.OK);
+    ResponseEntity getBooking(@PathVariable UUID id) {
+        BookingInfo bookingInfo = reservationService.getReservationInfo(id);
+        if(bookingInfo==null){
+            return new ResponseEntity<>(new String("Reservation information not found"),HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(bookingInfo, HttpStatus.OK);
     }
 
     @PutMapping("/booking/{id}")

@@ -1,6 +1,7 @@
 package com.example.hotelbooking.services;
 
 import com.example.hotelbooking.AppConfig;
+import com.example.hotelbooking.Dto.BookingInfo;
 import com.example.hotelbooking.Dto.BookingRequest;
 import com.example.hotelbooking.Dto.BookingResponse;
 import com.example.hotelbooking.entity.Reservation;
@@ -49,6 +50,15 @@ public class ReservationService {
             });
             presidentialSuitOfADayRepository.saveAll(presidentialSuitOfADayList);
             return appConfig.modelMapper().map(reservation, BookingResponse.class);
+        }
+        return null;
+    }
+
+    public BookingInfo getReservationInfo(UUID reservationId){
+        Reservation reservation =  reservationRepository.findByReservationId(reservationId);
+        if(reservation!=null){
+            BookingInfo bookingInfo = appConfig.modelMapper().map(reservation, BookingInfo.class);
+            return bookingInfo;
         }
         return null;
     }
