@@ -1,6 +1,7 @@
 package com.example.hotelbooking.repository;
 
 import com.example.hotelbooking.entity.PresidentialSuitOfADay;
+import com.example.hotelbooking.entity.Reservation;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
@@ -20,4 +21,7 @@ public interface PresidentialSuitOfADayRepository extends JpaRepository<Presiden
     @Query(value = "SELECT key FROM PresidentialSuitOfADay key WHERE key.availableDate= :currentDate")
     PresidentialSuitOfADay findByAvailableDate(@Param("currentDate") Date currentDate);
 
+    @Query(value = "SELECT key FROM PresidentialSuitOfADay key WHERE key.reservation= :reservation")
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    List<PresidentialSuitOfADay> findByReservation(@Param("reservation") Reservation reservation);
 }
