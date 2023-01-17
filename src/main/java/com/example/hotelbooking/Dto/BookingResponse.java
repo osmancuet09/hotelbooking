@@ -3,10 +3,11 @@ package com.example.hotelbooking.Dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Setter
 @Getter
 public class BookingResponse {
-    String reservationId;
-    String getReservationProcess;
-    String cancelReservationProcess;
+    UUID reservationId;
+    String message;
 }
