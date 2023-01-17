@@ -1,4 +1,5 @@
 package com.example.hotelbooking.Dto;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +13,9 @@ public class BookingRequest {
     String firstName;
     String lastName;
     Integer guestCount;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     Date startDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     Date endDate;
 
 }
