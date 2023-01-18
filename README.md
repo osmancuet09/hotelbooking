@@ -64,6 +64,14 @@ To run tests in a Spring Boot project with Maven, you can use the following comm
 to run specific test class or method you can use the following command : <br>
 ```mvn -Dtest=TestClassName#testMethod test``` <br>
 
+## Test Coverage
+for test coverage report run following command
+``` 
+mvn jacoco:report
+```
+<br>
+The report will be generated in the target/site/jacoco directory and you can view the report by opening the index.html file in a browser.
+<br>
 
 ### Concurrency Handle
 If two people request for booking the presidential suit at the same time for same date then traditional concurrency problem arise. 
