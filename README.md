@@ -65,3 +65,10 @@ to run specific test class or method you can use the following command : <br>
 ```mvn -Dtest=TestClassName#testMethod test``` <br>
 
 
+### Concurrency Handle
+If two people request for booking the presidential suit at the same time for same date then traditional concurrency problem arise. 
+we can handle concurrency problem in several way. 
+1. Use Locking mechanism in the Database. we can use Database Optimistic Lock or Pessimistic Lock
+2. Use Cache for lock like redis.
+3. Use a message queue and push all request in queue, then serially process the request.
+In this project we use Database Pessimistic lock to handle concurrency. 
