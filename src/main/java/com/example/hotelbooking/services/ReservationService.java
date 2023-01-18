@@ -39,6 +39,7 @@ public class ReservationService {
         LocalDate startDate = LocalDate.parse( new SimpleDateFormat("yyyy-MM-dd").format(bookingRequest.getStartDate()) );
         LocalDate endDate = LocalDate.parse( new SimpleDateFormat("yyyy-MM-dd").format(bookingRequest.getEndDate()) );
         Period age = Period.between(startDate, endDate);
+
         if(presidentialSuitOfADayList.size() == age.getDays()+1){
             Reservation reservation = appConfig.modelMapper().map(bookingRequest, Reservation.class);
             reservation.setStatus(ReservationStatus.RESERVED);
