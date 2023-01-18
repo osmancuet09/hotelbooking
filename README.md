@@ -20,31 +20,31 @@ Solution: Provide REST APIs for
 So basically I expose three rest API as follows: </br>
 1. For reservation of presidential suit<br>
 Endpoint: /booking <br>
-Method: POST <br>
-Sample Request: <br>
-``` 
-{
+Sample request: <br>
+```
+curl --location --request POST 'localhost:8080/booking' \
+--header 'Content-Type: application/json' \
+--data-raw '{
 "email": "osmangoni14@gmail.com",
 "firstName":"Osman",
 "lastName":"Gani",
 "guestCount":3,
 "startDate":"2023-01-18",
 "endDate":"2023-01-20"
-}
-```
-Sample Success Response <br>
-```
-{
-    "reservationId": "ef07c50c-61ff-494b-937a-a01e60a082ef",
-    "message": "Please preserve the reservationId for show the reservation status or cancel reservation"
-} 
+}'
 ```
 2. For query about reservation of presidential suit <br> 
 Endpoint: /booking/{id} <br>
-Method: GET <br>
+Sample request: <br>
+``` 
+curl --location --request GET 'localhost:8080/booking/ef07c50c-61ff-494b-937a-a01e60a082ef' 
+```
 3. For cancel reservation of presidential suit<br> 
 Endpoint: /booking/{id} <br>
-Method: PUT <br>
+Sample Request: <br>
+```
+curl --location --request PUT 'localhost:8080/booking/85aec0bc-445f-434c-b51f-14762ae08cbf'
+```
 
 ## Language and Frameworks Storage:
 Java: 17 <br>
