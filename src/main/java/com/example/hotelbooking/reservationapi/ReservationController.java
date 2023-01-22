@@ -4,6 +4,7 @@ import com.example.hotelbooking.Dto.BookingInfo;
 import com.example.hotelbooking.Dto.BookingRequest;
 import com.example.hotelbooking.Dto.BookingResponse;
 import com.example.hotelbooking.exceptionHandler.NoDataFoundException;
+import com.example.hotelbooking.exceptionHandler.ReservationNotAvailableException;
 import com.example.hotelbooking.services.ReservationService;
 import jakarta.persistence.LockTimeoutException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,8 @@ public class ReservationController {
         try {
             BookingResponse bookingResponse = reservationService.makeReservation(newBooking);
             if(bookingResponse==null){
-                return new ResponseEntity<>(new String("Presidencial suite is not available for this date range"),HttpStatus.BAD_REQUEST);
+                throw  new ReservationNotAvailableException("Presidential suite is not available for this date range",HttpStatus.BAD_REQUEST);
+//                return new ResponseEntity<>(new String("Presidential suite is not available for this date range"),HttpStatus.BAD_REQUEST);
             }
             bookingResponse.setMessage(new String("Please preserve the reservationId for show the reservation status or cancel reservation"));
             return new ResponseEntity<>(bookingResponse, HttpStatus.OK);
@@ -45,7 +47,7 @@ public class ReservationController {
     ResponseEntity getBooking(@PathVariable UUID id) {
         BookingInfo bookingInfo = reservationService.getReservationInfo(id);
         if(bookingInfo==null){
-            throw  new NoDataFoundException("No data found",HttpStatus.NOT_FOUND);
+            throw  new NoDataFoundException("No reservation information not found this this ID",HttpStatus.NOT_FOUND);
 //            return new ResponseEntity<>(new String("Reservation information not found"),HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(bookingInfo, HttpStatus.OK);
@@ -55,7 +57,7 @@ public class ReservationController {
     ResponseEntity cancelBooking(@PathVariable UUID id) {
         String response = reservationService.cancelReservation(id);
         if(response==null){
-            return new ResponseEntity<>(new String("Reservation information not found"),HttpStatus.NOT_FOUND);
+            throw  new NoDataFoundException("Reservation information not found",HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

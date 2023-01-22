@@ -15,4 +15,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorDto errorDto = new ErrorDto(new String(ex.getMessage()));
         return new ResponseEntity(errorDto, ex.getHttpStatus());
     }
+
+    @ExceptionHandler(ReservationNotAvailableException.class)
+    public ResponseEntity<ErrorDto> handleReservationNotAvailableException(
+            ReservationNotAvailableException ex) {
+        ErrorDto errorDto = new ErrorDto(new String(ex.getMessage()));
+        return new ResponseEntity(errorDto, ex.getHttpStatus());
+    }
 }
