@@ -1,8 +1,6 @@
 package com.example.hotelbooking.Dto;
 
-import ch.qos.logback.classic.joran.action.InsertFromJNDIAction;
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.time.LocalDateTime;
 
 public class ErrorDto {
