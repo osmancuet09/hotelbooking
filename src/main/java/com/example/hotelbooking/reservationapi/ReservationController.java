@@ -3,11 +3,13 @@ package com.example.hotelbooking.reservationapi;
 import com.example.hotelbooking.Dto.BookingInfo;
 import com.example.hotelbooking.Dto.BookingRequest;
 import com.example.hotelbooking.Dto.BookingResponse;
+import com.example.hotelbooking.exceptionHandler.NoDataFoundException;
 import com.example.hotelbooking.services.ReservationService;
+import jakarta.persistence.LockTimeoutException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -31,16 +33,20 @@ public class ReservationController {
             bookingResponse.setMessage(new String("Please preserve the reservationId for show the reservation status or cancel reservation"));
             return new ResponseEntity<>(bookingResponse, HttpStatus.OK);
         }
-        catch (ObjectOptimisticLockingFailureException e){
+        catch ( LockTimeoutException e){
             return new ResponseEntity<>(new String("Conflict with other reservation, please try a moment latter"),HttpStatus.CONFLICT);
         }
     }
 
-    @GetMapping("/booking/{id}")
+    @RequestMapping(
+            value = "/booking/{id}",
+            method = RequestMethod.GET,
+            produces="application/json")
     ResponseEntity getBooking(@PathVariable UUID id) {
         BookingInfo bookingInfo = reservationService.getReservationInfo(id);
         if(bookingInfo==null){
-            return new ResponseEntity<>(new String("Reservation information not found"),HttpStatus.NOT_FOUND);
+            throw  new NoDataFoundException("No data found",HttpStatus.NOT_FOUND);
+//            return new ResponseEntity<>(new String("Reservation information not found"),HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(bookingInfo, HttpStatus.OK);
     }
