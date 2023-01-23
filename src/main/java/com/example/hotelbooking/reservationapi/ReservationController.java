@@ -7,9 +7,9 @@ import com.example.hotelbooking.exceptionHandler.NoDataFoundException;
 import com.example.hotelbooking.exceptionHandler.ReservationNotAvailableException;
 import com.example.hotelbooking.services.ReservationService;
 import jakarta.persistence.LockTimeoutException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,19 +25,20 @@ public class ReservationController {
     }
 
     @PostMapping("/booking")
-    ResponseEntity createBooking(@RequestBody BookingRequest newBooking) {
+    ResponseEntity createBooking(@Valid @RequestBody BookingRequest newBooking) {
+        ResponseEntity result;
         try {
             BookingResponse bookingResponse = reservationService.makeReservation(newBooking);
-            if(bookingResponse==null){
-                throw  new ReservationNotAvailableException("Presidential suite is not available for this date range",HttpStatus.BAD_REQUEST);
+            if (bookingResponse == null) {
+                throw new ReservationNotAvailableException("Presidential suite is not available for this date range", HttpStatus.BAD_REQUEST);
 //                return new ResponseEntity<>(new String("Presidential suite is not available for this date range"),HttpStatus.BAD_REQUEST);
             }
             bookingResponse.setMessage(new String("Please preserve the reservationId for show the reservation status or cancel reservation"));
-            return new ResponseEntity<>(bookingResponse, HttpStatus.OK);
+            result = new ResponseEntity<>(bookingResponse, HttpStatus.OK);
+        } catch (LockTimeoutException e) {
+            result = new ResponseEntity<>(new String("Conflict with other reservation, please try a moment latter"), HttpStatus.CONFLICT);
         }
-        catch ( LockTimeoutException e){
-            return new ResponseEntity<>(new String("Conflict with other reservation, please try a moment latter"),HttpStatus.CONFLICT);
-        }
+        return result;
     }
 
     @RequestMapping(
